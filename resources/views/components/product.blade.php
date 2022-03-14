@@ -37,19 +37,44 @@
             <dt class="sr-only">Favourites</dt>
             <dd class="px-1.5 ring-1 ring-slate-200 rounded">{{ $product->favourites->count() }} {{ Str::plural('Favourite', $product->favourites->count()) }}</dd>
         </div>
+        @auth
         <div class="text-lg ml-4">
             <dt class="sr-only">Favorite</dt>
-            <dd>Favorite</dd>
+            @if (!$product->favouriteBy(auth()->user()))
+                <dd>
+                    <form action="{{ route('products.favourite', $product) }}" method="post" class="mr-2">
+                        @csrf
+                        <button type="submit" class="text-blue-500">Favorite</button>
+                    </form>
+                </dd>
+            @else
+                <dd>
+                    <form action="{{ route('products.favourite', $product) }}" method="post" class="mr-2">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-blue-500">Unfavourite</button>
+                    </form>
+                </dd>
+            @endif
         </div>
+        @endauth
+
+        @can('delete', $product)
         <div class="text-lg">
             <dt class="sr-only">Delete</dt>
             <dd class="flex items-center">
             <svg width="2" height="2" fill="currentColor" class="mx-2 text-slate-300" aria-hidden="true">
                 <circle cx="1" cy="1" r="1" />
             </svg>
-            Delete
+            <form action="{{ route('products.destroy', $product) }}" method="post" class="mr-2">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="text-red-500">Delete</button>
+            </form>
             </dd>
         </div>
+        @endcan
+
         </dl>
     </div>
     </article>

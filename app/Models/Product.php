@@ -29,4 +29,14 @@ class Product extends Model
     {
         return $this->hasMany(Favourite::class);
     }
+
+    public function favouriteBy(User $user)
+    {
+        return $this->favourites->contains('user_id', $user->id);
+    }
+
+    public function ownedBy(User $user)
+    {
+        return $user->id === $this->user_id;
+    }
 }

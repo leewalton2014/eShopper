@@ -15,7 +15,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::orderBy('created_at', 'desc')->with('user')->paginate(8);
+        $products = Product::orderBy('created_at', 'desc')->with(['user','favourites'])->paginate(8);
 
         return view('products.index', [
             'products' => $products,
@@ -48,7 +48,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //check policy
-
+        $this->authorize('delete', $product);
         //delete item
         $product->delete();
 

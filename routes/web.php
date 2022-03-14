@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\ProductFavouriteController;
 
 
 /*
@@ -35,6 +36,9 @@ Route::get('/products/create',[ProductController::class, 'create_product'])->nam
 Route::post('/products/create',[ProductController::class, 'store']);
 Route::delete('/products/{product}',[ProductController::class, 'destroy'])->name('products.destroy');
 
+//favourites routes
+Route::post('/products/{product}/favourite',[ProductFavouriteController::class, 'store'])->name('products.favourite');
+Route::delete('/products/{product}/favourite',[ProductFavouriteController::class, 'destroy'])->name('products.favourite');
 
 
 
